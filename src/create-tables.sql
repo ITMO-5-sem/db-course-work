@@ -95,7 +95,7 @@ create table race (
 
 
 create table living_races (
-    -- todo Нужен ли здесь отдельный id ?
+    -- todo Нужен ли здесь отдельный id?
     race_id int
         references race
             on delete cascade
@@ -188,7 +188,7 @@ create table spaceship (
 );
 
 
-create table landings_log (
+create table permissions_log (
     id serial primary key,
     date timestamp not null,
     permission_received bool not null,
@@ -202,9 +202,14 @@ create table landings_log (
             on update cascade
 );
 
+-- triggers and functions
+
 -- Updates a pilot_passport karma by it's id
-create or replace function update_karma(pilot_id_arg int) returns void as $$
+create or replace function update_karma() returns trigger as $$
+    declare
+        pilot_id_arg int;
     begin
+        pilot_id_arg := new.pilot_id;
         update pilot
             set karma =
             (
@@ -220,12 +225,24 @@ create or replace function update_karma(pilot_id_arg int) returns void as $$
                 where act_act_t.pilot_id = pilot_id_arg
             )
             where id = pilot_id_arg;
+        return new;
     end;
 $$ language plpgsql;
 
 
-create or replace function process_permission(spaceship_id_arg int, spacebase_id_arg int) returns void as $$
+create trigger update_karma_trigger
+    after insert
+    on action
+    for each row
+execute procedure update_karma();
+
+
+create or replace function process_permission() returns trigger as $$
     declare
+
+        spaceship_id_arg int;
+        spacebase_id_arg int;
+
         landing_time timestamp;
         min_required_karma int;
         max_required_karma int;
@@ -235,6 +252,10 @@ create or replace function process_permission(spaceship_id_arg int, spacebase_id
         permission_received_local bool;
 
     begin
+
+        spaceship_id_arg := new.spaceship_id;
+        spacebase_id_arg := new.spacebase_id;
+
         landing_time := now();
         select karma_from, karma_to
             into min_required_karma, max_required_karma
@@ -256,7 +277,7 @@ create or replace function process_permission(spaceship_id_arg int, spacebase_id
             permission_received_local := true;
         end if;
 
-        insert into landings_log values
+        insert into permissions_log values
         (
             default,
             now(),
@@ -265,19 +286,14 @@ create or replace function process_permission(spaceship_id_arg int, spacebase_id
             spacebase_id_arg
         );
 
+        return new;
     end;
 $$ language plpgsql;
 
 
-create trigger update_karma_trigger
-    after insert
-    on action
-    for each row
-    execute procedure update_karma(new.pilot_id);
-
-
 create trigger process_permission_trigger
     before insert
-    on landings_log
+    on permissions_log
     for each row
-    execute procedure process_permission(new.spaceship_id, new.spacebase_id)
+execute procedure process_permission()
+

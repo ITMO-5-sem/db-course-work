@@ -95,6 +95,24 @@ create table race (
         check ( length(description) > 0 )
 );
 
+create table planet_info (
+    -- citizens - кол-во жителей (в тыс.)
+     id serial primary key,
+     citizens int not null
+         check ( citizens >= 0 ),
+     planet_id int
+         references planet
+             on delete cascade -- delete planet - delete planet info
+             on update cascade,
+     politics int
+         references politics
+             on delete set null
+             on update cascade,
+     economics integer
+         references economics
+             on delete set null
+             on update cascade
+);
 
 create table living_races (
     id serial primary key,
@@ -102,31 +120,11 @@ create table living_races (
         references race
             on delete cascade
             on update cascade not null,
-    planet_id int
-        references planet
+    planet_info_id int
+        references planet_info
             on delete cascade
             on update cascade not null,
     unique (race_id, planet_info_id)
-);
-
-
-create table planet_info (
-    -- citizens - кол-во жителей (в тыс.)
-    id serial primary key,
-    citizens int not null
-        check ( citizens >= 0 ),
-    planet_id int
-        references planet
-            on delete cascade -- delete planet - delete planet info
-            on update cascade,
-    politics int
-        references politics
-            on delete set null
-            on update cascade,
-    economics integer
-        references economics
-            on delete set null
-            on update cascade
 );
 
 

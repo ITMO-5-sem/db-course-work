@@ -10,7 +10,20 @@ create table spacebase_type (
     id serial primary key,
     name varchar(16) not null unique
         check ( length(name) > 0 ),
-    description varchar(512) not null
+    description varchar(512) not null,
+    karma_from int
+        check
+        (
+                karma_from >= -100
+            and karma_from < 100
+        ),
+    karma_to int
+        check
+        (
+                karma_to < 100
+            and karma_to > -100
+            and karma_to > karma_from
+        )
 );
 
 
@@ -23,11 +36,12 @@ create table sector (
 
 create table system (
     id serial primary key,
-    name varchar(64) not null
+    name varchar(64) not null unique
         check ( length(name) > 0 ),
     sector int not null
         references sector
             on delete cascade
+            on update cascade
 );
 
 
@@ -41,20 +55,7 @@ create table spacebase (
     system_id int not null
         references system
             on delete cascade -- delete a system - delete everything
-            on update cascade,
-    karma_from int
-        check
-            (
-                    karma_from >= -100
-                and karma_from < 100
-            ),
-    karma_to int
-        check
-            (
-                    karma_to < 100
-                and karma_to > -100
-                and karma_to > karma_from
-            )
+            on update cascade
 );
 
 
@@ -85,6 +86,7 @@ create table economics (
         check ( length(description) > 0 )
 );
 
+
 create table race (
     id serial primary key,
     name varchar(32) not null
@@ -95,7 +97,7 @@ create table race (
 
 
 create table living_races (
-    -- todo Нужен ли здесь отдельный id?
+    id serial primary key,
     race_id int
         references race
             on delete cascade
@@ -104,7 +106,7 @@ create table living_races (
         references planet
             on delete cascade
             on update cascade not null,
-    primary key(race_id, planet_id)
+    unique (race_id, planet_info_id)
 );
 
 
@@ -155,13 +157,13 @@ create table pilot (
        references planet
            on delete set null
            on update cascade,
-   karma int not null
+   karma int not null default 0
 );
 
 
 create table action (
     id serial primary key,
-    date date not null ,
+    date date not null default now(),
     action_description text,
     pilot_id int not null
         references pilot
@@ -237,6 +239,7 @@ create trigger update_karma_trigger
 execute procedure update_karma();
 
 
+
 create or replace function process_permission() returns trigger as $$
     declare
 
@@ -259,7 +262,13 @@ create or replace function process_permission() returns trigger as $$
         landing_time := now();
         select karma_from, karma_to
             into min_required_karma, max_required_karma
-            from spacebase where spacebase.id = spacebase_id_arg;
+            from spacebase_type
+            where spacebase_type.id =
+            (
+                select spacebase_type_id
+                from spacebase
+                where spacebase.id = spacebase_id_arg
+            );
 
         select karma into pilot_karma
             from pilot
@@ -295,5 +304,4 @@ create trigger process_permission_trigger
     before insert
     on permissions_log
     for each row
-execute procedure process_permission()
-
+execute procedure process_permission();

@@ -1,3 +1,8 @@
+create sequence object_id_sequence
+    start 1
+    increment 1;
+
+
 create table sector
 (
     id   serial primary key,
@@ -54,15 +59,7 @@ create table spacebase
 );
 
 
-create table planet
-(
-    id     serial primary key,
-    obj_id int references space_object on delete cascade on update cascade not null,
-    system int         not null
-        references system
-            on delete cascade -- remove system - remove all planets
-            on update cascade
-);
+
 
 
 create table politics
@@ -94,16 +91,12 @@ create table race
         check ( length( description ) > 0 )
 );
 
-create table planet_info
+create table planet
 (
-    -- citizens - кол-во жителей (в тыс.)
-    id        serial primary key,
+    
+    obj_id int references space_object on delete cascade on update cascade not null,
     citizens  int not null
-        check ( citizens >= 0 ),
-    planet_id int
-        references planet
-            on delete cascade -- delete planet - delete planet info
-            on update cascade,
+        check ( citizens >= 0 ), -- citizens - кол-во жителей (в тыс.)
     politics  int
         references politics
             on delete set null
@@ -193,7 +186,7 @@ create table action
             on delete restrict
             on update cascade
 );
--- пошел кущац ...
+
 
 create table LIVING_RACES
 (

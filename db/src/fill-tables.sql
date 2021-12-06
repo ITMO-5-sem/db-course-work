@@ -1,271 +1,488 @@
+insert into user_role(role_name)
+values ('USER'),
+       ('ADMIN');
+
+insert into username
+values (default, 'BOT', 'LOGIN', (select id from user_role where user_role.role_name = 'ADMIN'));
+
 insert into spaceship_type
-values
-    (
-        default,
-        'Торговый корабль',
-        'Медленный, бронированный и грузоподъёмный. Нет вооружения.'
-    ),
-    (
-        default,
-        'Лайнер',
-        'Среднескоростной и бронированный, служит для транспортировки пассажиров. Нет вооружения.'
-    ),
-    (
-        default,
-        'Корсар',
-        'быстрый корабль, хорошее вооружение, плохая броня.'
-    );
+values (default,
+        'Грузовой транспорт',
+        'Медленный, бронированный и грузоподъёмный. Слабое вооружения.'),
+       (default,
+        'Дипломатический корабль',
+        'Быстрый, броннированный, с неплохим вооружением. Используется для дипломатический миссий.'),
+       (default,
+        'Пассажирский Лайнер',
+        'Среднескоростной и бронированный, служит для транспортировки пассажиров. Слабое вооружения.'),
+       (default,
+        'Военный корабль',
+        'корабль средней скорости, хорошее вооружение, хорошая броня.'),
+       (default,
+        'Пиратский корабль',
+        'Быстрый корабль, среднее вооружение, но слабая защита корпуса. Лучшее что' ||
+        ' можно было собрать из космичекого мусора'),
+       (default,
+        'Корабль Рейнджера',
+        'Корабль средней скорости, хорошее вооружение и броня.'),
+       (default,
+        'Флагман',
+        'Является крупным военным кораблём. Крайне медлительный, но имеет прекрасную прочность' ||
+        'корпуса и передовое вооружение');
 
 insert into spacebase_type
-values
-    (
-        default,
-        'Пиратская база',
-        'Пиратская база - логово всяких негодяев и убийц. Но даже так, некоторые говорят, что у них есть свой кодекс.',
-        -100,
-        -77
-    );
-
-
-insert into spacebase_type
-values
-    (
-        default,
+values (default,
         'Медицинский центр',
         'Медицинский центр - отличное место после тяжелой заварушки.',
         -32,
-        100
-    );
-
-insert into spacebase_type
-values
-    (
-        default,
+        100),
+       (default,
         'Бизнес-центр',
         'Космический банк. Работает как любой другой банк.',
         0,
-        100
-    ),
-    (
-        default,
+        100),
+       (default,
         'Военная база',
         'Космическая база. Информация, которая там хранится строго засекречена.',
         75,
-        100
-    ),
-    (
-        default,
+        100),
+       (default,
         'Черный рынок',
         'Место скопления воров и мошенников. Здесь можно прибрести не совсем законные вещи.',
         -100,
-        100
-    ),
-    (
-        default,
+        100),
+       (default,
         'Научная станция',
         'Научная станция - отличное место для приобретения передовых технологий.',
         20,
-        100
-    );
+        100),
+       (default, 'Доминион',
+        'Удивительно, но у пиратского союза также есть своя космическая база. Благодаря своей ' ||
+        'удивительной технологии менять своё месторасположение в галактике, на космическую базу Доминион' ||
+        ' ещё никому не удалось напасть.',
+        -100,
+        -25),
+       (default,
+        'Центр рейнджеров',
+        'Проводят классификацию рейнджеров. Информируют планеты о деятельности тех или иных рейнджеров',
+        25,
+        100);
 
 insert into politics
-values
-    (
-        default,
+values (default,
         'Абсолютная монархия',
-        'Все подчиняются королю.'
-    ),
-    (
-        default,
+        'Форма правления или государственного устройства, при котором пост официального главой государства закреплён за монархом.'),
+       (default,
         'Демократия',
-        'Все граждане имеют равные права.'
-    );
+        'Форма правления, при которой народ имеет право выбирать своих правящих законодателей'),
+       (default,
+        'Анархия',
+        'Здесь нет власти, правил или законов. Однако слабые все равно вынуждены подчиняться сильным'),
+       (default,
+        'Республика',
+        'Форма государственного правления, при которой все органы государственной власти либо избираются на определённый срок,' ||
+        ' либо формируются общенациональными представительными учреждениями (например, парламентом), а граждане обладают личными и политическими правами.');
 
 insert into economics
-values
-    (
-        default,
-        'Аграрная',
-        'Преобладает сельское хозяйство.'
-    ),
-    (
-        default, 'Индустриальная', 'Преобладает промышленность с гибкими динамичными структурами.'
-    );
+values (default, 'Аграрная', 'Преобладает сельское хозяйство.'),
+       (default, 'Индустриальная', 'Преобладает промышленность с гибкими динамичными структурами.'),
+       (default, 'Смешанная', 'Развитие аграрной и индустриальной промышленностей идёт равномено.');
 
 insert into race
-values
-    (
-        default, 'Человек', 'Две руги, две ноги - на макаку похож'
-    ),
-    (
-        default, 'Фэяне', 'Раса гуманоидов-гермафродитов с большим мозгом и фасеточными глазами'
-    ),
-    (
-        default, 'Маллоки',
+values (default, 'Человек', 'Две руги, две ноги - на макаку похож.'),
+       (default, 'Фэяне', 'Раса гуманоидов-гермафродитов с большим мозгом и фасеточными глазами.'),
+       (default, 'Малок',
         ' крупные, мощного телосложения гуманоиды. Для них характерна огромная физическая сила, ' || 'выносливость, ' ||
-        'высокая сопротивляемость природным факторам, не слишком активная мыслительная деятельность.'
-    );
-
-insert into sector
-values
-    (
-        default, 'Карагон'
-    ),
-    (
-        default, 'Зондур'
-    ),
-    (
-        default, 'Фаави'
-    );
+        'высокая сопротивляемость природным факторам, не слишком активная мыслительная деятельность.'),
+       (default, 'Гаалец',
+        'гуманоиды, тысячелетиями модифицирующие свою биологическую форму путем генетических модификаций эмбрионов.'),
+       (default, 'Пеленг',
+        'относится к виду жаброшеих амфибий. Этот вид существ одинаково хорошо приспособлен для обитания как в жидкой среде, так и на суше.');
 
 
-insert into system
-values
-    (
-        default,
-        'Солнце',
-        (select sector.id from sector where sector.name = 'Карагон')
-    ),
-    (
-        default,
-        'Беллатрикс',
-        (select sector.id from sector where sector.name = 'Зондур')
-    ),
-    (
-        default,
-        'Таллот',
-        (select sector.id from sector where sector.name = 'Фаави')
-    );
+insert into sector(name)
+values ('Атланта'),
+       ('Фаави'),
+       ('Таолис'),
+       ('Нароби'),
+       ('Реггет'),
+       ('Эльта'),
+       ('Карагон');
 
-insert into planet
-values
-    (
-        default, 'Земля', (select system.id from system where system.name = 'Солнце')
-    ),
-    (
-        default,
-        'Чанга',
-        (select system.id from system where system.name = 'Беллатрикс')
-    ), --Эта планета необитаемая
-    (
-        default, 'Орооген', (select system.id from system where system.name = 'Таллот')
-    );
+insert into systemsr(name, sector)
+VALUES ('Витта Прайонис', (select sector.id from sector where sector.name = 'Атланта')),
+       ('Шеат', (select sector.id from sector where sector.name = 'Атланта')),
+       ('Краа', (select sector.id from sector where sector.name = 'Атланта')),
+       ('Тураис', (select sector.id from sector where sector.name = 'Атланта')),
 
---id, citizens, planet_id, politics, economics
-insert into planet_info
-values
-    (
-        default,
-        10000,
-        (select planet.id from planet where planet.name = 'Земля'),
-        (select politics.id from politics where politics.name = 'Демократия'),
-        (select economics.id from economics where economics.name = 'Аграрная')
-    ),
-    (
-        default,
-        5000,
-        (select planet.id from planet where planet.name = 'Орооген'),
-        (select politics.id from politics where politics.name = 'Демократия'),
-        (select economics.id from economics where economics.name = 'Индустриальная')
-    );
+       ('Хезе', (select sector.id from sector where sector.name = 'Фаави')),
+       ('Таллот', (select sector.id from sector where sector.name = 'Фаави')),
+       ('Ругулус', (select sector.id from sector where sector.name = 'Фаави')),
+
+       ('Гевер', (select sector.id from sector where sector.name = 'Таолис')),
+       ('Наккар', (select sector.id from sector where sector.name = 'Таолис')),
+       ('Селиостр', (select sector.id from sector where sector.name = 'Таолис')),
+
+       ('Укфал', (select sector.id from sector where sector.name = 'Нароби')),
+       ('Юфалли', (select sector.id from sector where sector.name = 'Нароби')),
+       ('Денеб', (select sector.id from sector where sector.name = 'Нароби')),
+       ('Атрия', (select sector.id from sector where sector.name = 'Нароби')),
+
+       ('Фелгест', (select sector.id from sector where sector.name = 'Реггет')),
+       ('Завия', (select sector.id from sector where sector.name = 'Реггет')),
+       ('Диадема', (select sector.id from sector where sector.name = 'Реггет')),
+
+       ('Маркаб', (select sector.id from sector where sector.name = 'Эльта')),
+       ('Аркабе', (select sector.id from sector where sector.name = 'Эльта')),
+       ('Канопус', (select sector.id from sector where sector.name = 'Эльта')),
+       ('Сезмен', (select sector.id from sector where sector.name = 'Эльта')),
+       ('Муррац', (select sector.id from sector where sector.name = 'Эльта')),
+
+       ('Бетельгейзе', (select sector.id from sector where sector.name = 'Карагон')),
+       ('Кефрон', (select sector.id from sector where sector.name = 'Карагон')),
+       ('Солнце', (select sector.id from sector where sector.name = 'Карагон'));
 
 
-insert into spacebase
-values
-    (
-        default,
-        'Пьяный корсар',
-        (select spacebase_type_id from spacebase_type where spacebase_type.name = 'Пиратская база'),
-        (select system_id from system where system.name = 'Таллот')
-    ),
-    (
-        default,
-        'Костоправ',
-        (select spacebase_type_id from spacebase_type where spacebase_type.name = 'Медицинский центр'),
-        (select system_id from system where system.name = 'Солнце')
-    )
+--------------
+
+insert into planet(name, citizens, politics, economics, systemsr)
+values ('Зажин', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Витта Прайонис')),
+       ('Пихора', 1337, 2, 2, (select systemsr.id from systemsr where systemsr.name = 'Витта Прайонис')),
+       ('Клере', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Витта Прайонис')),
+       ('Галон', 5789, 3, 1, (select systemsr.id from systemsr where systemsr.name = 'Витта Прайонис')),
+       ('Земец', 6757, 3, 1, (select systemsr.id from systemsr where systemsr.name = 'Витта Прайонис')),
+
+       ('Стант', 1086, 1, 2, (select systemsr.id from systemsr where systemsr.name = 'Шеат')),
+       ('Шкоты', 8326, 2, 2, (select systemsr.id from systemsr where systemsr.name = 'Шеат')),
+       ('Андрия', 841, 4, 3, (select systemsr.id from systemsr where systemsr.name = 'Шеат')),
+       ('Петаом', 8354, 2, 1, (select systemsr.id from systemsr where systemsr.name = 'Шеат')),
+       ('Купава', 9947, 2, 1, (select systemsr.id from systemsr where systemsr.name = 'Шеат')),
+
+       ('Оарион', 2086, 3, 2, (select systemsr.id from systemsr where systemsr.name = 'Краа')),
+       ('Бэнди', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Краа')),
+       ('Протес', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Краа')),
+       ('Макам', 4876, 1, 2, (select systemsr.id from systemsr where systemsr.name = 'Краа')),
+       ('Чиамба', 1817, 3, 3, (select systemsr.id from systemsr where systemsr.name = 'Краа')),
+       ('Ноноза', 9393, 4, 2, (select systemsr.id from systemsr where systemsr.name = 'Краа')),
+
+       ('Гексин', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Тураис')),
+       ('Вишня', 2588, 1, 2, (select systemsr.id from systemsr where systemsr.name = 'Тураис')),
+       ('Павия', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Тураис')),
+       ('Омилит', 8572, 3, 2, (select systemsr.id from systemsr where systemsr.name = 'Тураис')),
+       ('Нельма', 484, 3, 1, (select systemsr.id from systemsr where systemsr.name = 'Тураис')),
+       ('Кекур', 5378, 2, 1, (select systemsr.id from systemsr where systemsr.name = 'Тураис')),
+
+       ('Крунер', 5415, 2, 1, (select systemsr.id from systemsr where systemsr.name = 'Хезе')),
+       ('Хопеш', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Хезе')),
+       ('Заюшка', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Хезе')),
+
+       ('Аптих', 1428, 3, 1, (select systemsr.id from systemsr where systemsr.name = 'Таллот')),
+       ('Кайчи', 4037, 4, 3, (select systemsr.id from systemsr where systemsr.name = 'Таллот')),
+       ('Дачка', 4060, 1, 1, (select systemsr.id from systemsr where systemsr.name = 'Таллот')),
+
+       ('Мубах', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Ругулус')),
+       ('Шхоут', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Ругулус')),
+       ('Накол', 6372, 1, 2, (select systemsr.id from systemsr where systemsr.name = 'Ругулус')),
+
+       ('Отроек', 8928, 1, 1, (select systemsr.id from systemsr where systemsr.name = 'Гевер')),
+       ('Венед', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Гевер')),
+       ('Чаевод', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Гевер')),
+       ('Популо', 8812, 4, 2, (select systemsr.id from systemsr where systemsr.name = 'Гевер')),
+       ('Флокен', 8600, 2, 2, (select systemsr.id from systemsr where systemsr.name = 'Гевер')),
+       ('Годик', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Гевер')),
+
+       ('Абсент', 7089, 1, 1, (select systemsr.id from systemsr where systemsr.name = 'Наккар')),
+       ('Голак', 1682, 3, 3, (select systemsr.id from systemsr where systemsr.name = 'Наккар')),
+       ('Фильтр', 2792, 2, 2, (select systemsr.id from systemsr where systemsr.name = 'Наккар')),
+       ('Могель', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Наккар')),
+       ('Вещун', 3366, 2, 1, (select systemsr.id from systemsr where systemsr.name = 'Наккар')),
+
+       ('Ворьё', 39, 3, 2, (select systemsr.id from systemsr where systemsr.name = 'Селиостр')),
+       ('Сечат', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Селиостр')),
+       ('Эсбоит', 9406, 2, 1, (select systemsr.id from systemsr where systemsr.name = 'Селиостр')),
+       ('Тоддит', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Селиостр')),
+       ('Воблер', 6130, 2, 3, (select systemsr.id from systemsr where systemsr.name = 'Селиостр')),
+       ('Палики', 4707, 1, 1, (select systemsr.id from systemsr where systemsr.name = 'Селиостр')),
+
+       ('Бахта', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Укфал')),
+       ('Миссия', 9021, 2, 3, (select systemsr.id from systemsr where systemsr.name = 'Укфал')),
+       ('Арритм', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Укфал')),
+
+       ('Шоканг', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Юфалли')),
+       ('Адденд', 696, 2, 3, (select systemsr.id from systemsr where systemsr.name = 'Юфалли')),
+       ('Папаха', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Юфалли')),
+       ('Свара', 8497, 1, 2, (select systemsr.id from systemsr where systemsr.name = 'Юфалли')),
+       ('Такель', 1342, 3, 3, (select systemsr.id from systemsr where systemsr.name = 'Юфалли')),
+       ('Филад', 37, 3, 1, (select systemsr.id from systemsr where systemsr.name = 'Юфалли')),
+
+       ('Ввозка', 2163, 1, 2, (select systemsr.id from systemsr where systemsr.name = 'Денеб')),
+       ('Сейаб', 4117, 1, 3, (select systemsr.id from systemsr where systemsr.name = 'Денеб')),
+       ('Бирка', 3859, 3, 2, (select systemsr.id from systemsr where systemsr.name = 'Денеб')),
+       ('Сутра', 6933, 3, 2, (select systemsr.id from systemsr where systemsr.name = 'Денеб')),
+
+       ('Дутар', 2901, 2, 1, (select systemsr.id from systemsr where systemsr.name = 'Атрия')),
+       ('Подрод', 675, 3, 3, (select systemsr.id from systemsr where systemsr.name = 'Атрия')),
+       ('Порте', 658, 2, 1, (select systemsr.id from systemsr where systemsr.name = 'Атрия')),
+       ('Анурез', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Атрия')),
+       ('Лесище', 4730, 2, 2, (select systemsr.id from systemsr where systemsr.name = 'Атрия')),
+
+       ('Стринг', 1357, 1, 1, (select systemsr.id from systemsr where systemsr.name = 'Фелгест')),
+       ('Сувари', 8543, 2, 3, (select systemsr.id from systemsr where systemsr.name = 'Фелгест')),
+       ('Ибогин', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Фелгест')),
+       ('Астрея', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Фелгест')),
+       ('Струя', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Фелгест')),
+       ('Алмаз', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Фелгест')),
+
+       ('Опара', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Завия')),
+       ('Осаги', 8578, 1, 3, (select systemsr.id from systemsr where systemsr.name = 'Завия')),
+       ('Вейка', 1852, 2, 2, (select systemsr.id from systemsr where systemsr.name = 'Завия')),
+       ('Растер', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Завия')),
+       ('Фронт', 8578, 1, 2, (select systemsr.id from systemsr where systemsr.name = 'Завия')),
+
+       ('Коржец', 9811, 3, 2, (select systemsr.id from systemsr where systemsr.name = 'Диадема')),
+       ('Тумыр', 535, 2, 2, (select systemsr.id from systemsr where systemsr.name = 'Диадема')),
+       ('Турус', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Диадема')),
+       ('Щипец', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Диадема')),
+
+       ('Жатка', 5495, 2, 1, (select systemsr.id from systemsr where systemsr.name = 'Маркаб')),
+       ('Завязь', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Маркаб')),
+       ('Зубец', 9704, 3, 1, (select systemsr.id from systemsr where systemsr.name = 'Маркаб')),
+       ('Список', 3824, 1, 1, (select systemsr.id from systemsr where systemsr.name = 'Маркаб')),
+       ('Нетяг', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Маркаб')),
+
+       ('Мистик', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Аркабе')),
+       ('Жилица', 289, 1, 1, (select systemsr.id from systemsr where systemsr.name = 'Аркабе')),
+       ('Чаньго', 4971, 2, 3, (select systemsr.id from systemsr where systemsr.name = 'Аркабе')),
+       ('Хокку', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Аркабе')),
+
+       ('Арабан', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Канопус')),
+       ('Долбяк', 9543, 3, 1, (select systemsr.id from systemsr where systemsr.name = 'Канопус')),
+       ('Смизит', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Канопус')),
+       ('Менса', 1915, 3, 2, (select systemsr.id from systemsr where systemsr.name = 'Канопус')),
+       ('Облов', 9312, 2, 2, (select systemsr.id from systemsr where systemsr.name = 'Канопус')),
+       ('Лавабо', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Канопус')),
+
+       ('Шкапа', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Сезмен')),
+       ('Нафтид', 6791, 2, 2, (select systemsr.id from systemsr where systemsr.name = 'Сезмен')),
+       ('Ежиха', 9393, 1, 2, (select systemsr.id from systemsr where systemsr.name = 'Сезмен')),
+
+       ('Усмарь', 1759, 1, 1, (select systemsr.id from systemsr where systemsr.name = 'Муррац')),
+       ('Квагга', 750, 1, 2, (select systemsr.id from systemsr where systemsr.name = 'Муррац')),
+       ('Ирида', 9918, 1, 2, (select systemsr.id from systemsr where systemsr.name = 'Муррац')),
+       ('Нерине', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Муррац')),
+       ('Ажушак', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Муррац')),
+       ('Комик', 8740, 2, 1, (select systemsr.id from systemsr where systemsr.name = 'Муррац')),
+
+       ('Невод', 9031, 2, 2, (select systemsr.id from systemsr where systemsr.name = 'Бетельгейзе')),
+       ('Форинт', 7339, 2, 2, (select systemsr.id from systemsr where systemsr.name = 'Бетельгейзе')),
+       ('Котище', 1816, 1, 1, (select systemsr.id from systemsr where systemsr.name = 'Бетельгейзе')),
+       ('Колок', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Бетельгейзе')),
+       ('Напор', 9788, 3, 2, (select systemsr.id from systemsr where systemsr.name = 'Бетельгейзе')),
+       ('Губной', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Бетельгейзе')),
+
+       ('Ларга', 2145, 1, 1, (select systemsr.id from systemsr where systemsr.name = 'Кефрон')),
+       ('Бинард', 5074, 3, 2, (select systemsr.id from systemsr where systemsr.name = 'Кефрон')),
+       ('Хилый', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Кефрон')),
+       ('Ворон', 1252, 3, 1, (select systemsr.id from systemsr where systemsr.name = 'Кефрон')),
+       ('Гусли', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Кефрон')),
+       ('Борок', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Кефрон')),
+
+       ('Меркурий', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Солнце')),
+       ('Венера', 5889, 2, 1, (select systemsr.id from systemsr where systemsr.name = 'Солнце')),
+       ('Земля', 42512, 2, 1, (select systemsr.id from systemsr where systemsr.name = 'Солнце')),
+       ('Марс', 4849, 2, 2, (select systemsr.id from systemsr where systemsr.name = 'Солнце')),
+       ('Юпитер', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Солнце')),
+       ('Уран', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Солнце')),
+       ('Нептун', 0, null, null, (select systemsr.id from systemsr where systemsr.name = 'Солнце'));
+
+insert into pilot(name, description, race_id, rating, owner)
+values ('Улаан', 'Created by BOT', (select id from race where race.name = 'Гаалец'), 41,
+        (select id from username where username.login = 'BOT')),
+       ('Антон', 'Created by BOT', (select id from race where race.name = 'Человек'), 8,
+        (select id from username where username.login = 'BOT')),
+       ('На-Аклари', 'Created by BOT', (select id from race where race.name = 'Гаалец'), -23,
+        (select id from username where username.login = 'BOT')),
+       ('Корнилий', 'Created by BOT', (select id from race where race.name = 'Человек'), 79,
+        (select id from username where username.login = 'BOT')),
+       ('Бандак', 'Created by BOT', (select id from race where race.name = 'Малок'), 63,
+        (select id from username where username.login = 'BOT')),
+       ('Рийомайцах', 'Created by BOT', (select id from race where race.name = 'Пеленг'), 71,
+        (select id from username where username.login = 'BOT')),
+       ('Кучма Хан', 'Created by BOT', (select id from race where race.name = 'Пеленг'), -15,
+        (select id from username where username.login = 'BOT')),
+       ('Цурилшек', 'Created by BOT', (select id from race where race.name = 'Пеленг'), 63,
+        (select id from username where username.login = 'BOT')),
+       ('Алеамис', 'Created by BOT', (select id from race where race.name = 'Гаалец'), -34,
+        (select id from username where username.login = 'BOT')),
+       ('Пацакен', 'Created by BOT', (select id from race where race.name = 'Пеленг'), 87,
+        (select id from username where username.login = 'BOT')),
+       ('Нео', 'Created by BOT', (select id from race where race.name = 'Человек'), 12,
+        (select id from username where username.login = 'BOT')),
+       ('Орбан', 'Created by BOT', (select id from race where race.name = 'Малок'), -53,
+        (select id from username where username.login = 'BOT')),
+       ('То-Олак', 'Created by BOT', (select id from race where race.name = 'Гаалец'), 29,
+        (select id from username where username.login = 'BOT')),
+       ('Улла Исни', 'Created by BOT', (select id from race where race.name = 'Фэяне'), 71,
+        (select id from username where username.login = 'BOT')),
+       ('Лама-Ани', 'Created by BOT', (select id from race where race.name = 'Гаалец'), 94,
+        (select id from username where username.login = 'BOT')),
+       ('Менайкан', 'Created by BOT', (select id from race where race.name = 'Фэяне'), -81,
+        (select id from username where username.login = 'BOT')),
+       ('Янса-Анк', 'Created by BOT', (select id from race where race.name = 'Гаалец'), 68,
+        (select id from username where username.login = 'BOT')),
+       ('Ошира Бен', 'Created by BOT', (select id from race where race.name = 'Пеленг'), 27,
+        (select id from username where username.login = 'BOT')),
+       ('Цыхуля', 'Created by BOT', (select id from race where race.name = 'Пеленг'), -98,
+        (select id from username where username.login = 'BOT')),
+       ('Фонтаами', 'Created by BOT', (select id from race where race.name = 'Гаалец'), 25,
+        (select id from username where username.login = 'BOT')),
+       ('Цедила', 'Created by BOT', (select id from race where race.name = 'Пеленг'), 63,
+        (select id from username where username.login = 'BOT')),
+       ('Борегрок', 'Created by BOT', (select id from race where race.name = 'Пеленг'), -67,
+        (select id from username where username.login = 'BOT')),
+       ('Леонид', 'Created by BOT', (select id from race where race.name = 'Человек'), 88,
+        (select id from username where username.login = 'BOT')),
+       ('Ролаакан', 'Created by BOT', (select id from race where race.name = 'Гаалец'), 3,
+        (select id from username where username.login = 'BOT')),
+       ('Кудорга', 'Created by BOT', (select id from race where race.name = 'Малок'), -15,
+        (select id from username where username.login = 'BOT')),
+       ('Гааори', 'Created by BOT', (select id from race where race.name = 'Гаалец'), 66,
+        (select id from username where username.login = 'BOT')),
+       ('Шварц', 'Created by BOT', (select id from race where race.name = 'Человек'), 60,
+        (select id from username where username.login = 'BOT')),
+       ('Траак', 'Created by BOT', (select id from race where race.name = 'Гаалец'), 41,
+        (select id from username where username.login = 'BOT')),
+       ('Толоймак', 'Created by BOT', (select id from race where race.name = 'Фэяне'), 38,
+        (select id from username where username.login = 'BOT')),
+       ('Ацка', 'Created by BOT', (select id from race where race.name = 'Человек'), -93,
+        (select id from username where username.login = 'BOT')),
+       ('Раа Мати', 'Created by BOT', (select id from race where race.name = 'Гаалец'), 65,
+        (select id from username where username.login = 'BOT')),
+       ('Элка-Ган', 'Created by BOT', (select id from race where race.name = 'Фэяне'), -34,
+        (select id from username where username.login = 'BOT')),
+       ('Саб', 'Created by BOT', (select id from race where race.name = 'Человек'), -58,
+        (select id from username where username.login = 'BOT')),
+       ('Зоггарто', 'Created by BOT', (select id from race where race.name = 'Пеленг'), -33,
+        (select id from username where username.login = 'BOT')),
+       ('Мелорри', 'Created by BOT', (select id from race where race.name = 'Гаалец'), -16,
+        (select id from username where username.login = 'BOT')),
+       ('Пирр', 'Created by BOT', (select id from race where race.name = 'Человек'), -61,
+        (select id from username where username.login = 'BOT'));
+
+
+insert into spaceship(name, spaceship_type_id, pilot_id, system_id)
+values ('Корабль Рейнджера Улаан', (select id from spaceship_type where spaceship_type.name = 'Корабль Рейнджера'),
+        (select id from pilot where pilot.name = 'Улаан'), 3),
+       ('Грузовой транспорт Антон', (select id from spaceship_type where spaceship_type.name = 'Пассажирский Лайнер'),
+        (select id from pilot where pilot.name = 'Антон'), 5),
+       ('Пиратский корабль На-Аклари', (select id from spaceship_type where spaceship_type.name = 'Пиратский корабль'),
+        (select id from pilot where pilot.name = 'На-Аклари'), 1),
+       ('Корабль Рейнджера Корнилий', (select id from spaceship_type where spaceship_type.name = 'Корабль Рейнджера'),
+        (select id from pilot where pilot.name = 'Корнилий'), 2),
+       ('Корабль Рейнджера Бандак', (select id from spaceship_type where spaceship_type.name = 'Корабль Рейнджера'),
+        (select id from pilot where pilot.name = 'Бандак'), 14),
+       ('Корабль Рейнджера Рийомайцах', (select id from spaceship_type where spaceship_type.name = 'Корабль Рейнджера'),
+        (select id from pilot where pilot.name = 'Рийомайцах'), 13),
+       ('Дипломатический корабль Кучма Хан',
+        (select id from spaceship_type where spaceship_type.name = 'Военный корабль'),
+        (select id from pilot where pilot.name = 'Кучма Хан'), 22),
+       ('Корабль Рейнджера Цурилшек', (select id from spaceship_type where spaceship_type.name = 'Корабль Рейнджера'),
+        (select id from pilot where pilot.name = 'Цурилшек'), 21),
+       ('Пиратский корабль Алеамис', (select id from spaceship_type where spaceship_type.name = 'Пиратский корабль'),
+        (select id from pilot where pilot.name = 'Алеамис'), 23),
+       ('Корабль Рейнджера Пацакен', (select id from spaceship_type where spaceship_type.name = 'Корабль Рейнджера'),
+        (select id from pilot where pilot.name = 'Пацакен'), 2),
+       ('Военный корабль Нео', (select id from spaceship_type where spaceship_type.name = 'Грузовой транспорт'),
+        (select id from pilot where pilot.name = 'Нео'), 12),
+       ('Пиратский корабль Орбан', (select id from spaceship_type where spaceship_type.name = 'Пиратский корабль'),
+        (select id from pilot where pilot.name = 'Орбан'), 9),
+       ('Дипломатический корабль То-Олак',
+        (select id from spaceship_type where spaceship_type.name = 'Пассажирский Лайнер'),
+        (select id from pilot where pilot.name = 'То-Олак'), 10),
+       ('Корабль Рейнджера Улла Исни', (select id from spaceship_type where spaceship_type.name = 'Корабль Рейнджера'),
+        (select id from pilot where pilot.name = 'Улла Исни'), 12),
+       ('Флагман Лама-Ани', (select id from spaceship_type where spaceship_type.name = 'Флагман'),
+        (select id from pilot where pilot.name = 'Лама-Ани'), 18),
+       ('Пиратский корабль Менайкан', (select id from spaceship_type where spaceship_type.name = 'Пиратский корабль'),
+        (select id from pilot where pilot.name = 'Менайкан'), 11),
+       ('Корабль Рейнджера Янса-Анк', (select id from spaceship_type where spaceship_type.name = 'Корабль Рейнджера'),
+        (select id from pilot where pilot.name = 'Янса-Анк'), 17),
+       ('Пассажирский Лайнер Ошира Бен', (select id from spaceship_type where spaceship_type.name = 'Военный корабль'),
+        (select id from pilot where pilot.name = 'Ошира Бен'), 11),
+       ('Пиратский корабль Цыхуля', (select id from spaceship_type where spaceship_type.name = 'Пиратский корабль'),
+        (select id from pilot where pilot.name = 'Цыхуля'), 21),
+       ('Грузовой транспорт Фонтаами',
+        (select id from spaceship_type where spaceship_type.name = 'Дипломатический корабль'),
+        (select id from pilot where pilot.name = 'Фонтаами'), 12),
+       ('Корабль Рейнджера Цедила', (select id from spaceship_type where spaceship_type.name = 'Корабль Рейнджера'),
+        (select id from pilot where pilot.name = 'Цедила'), 16),
+       ('Пиратский корабль Борегрок', (select id from spaceship_type where spaceship_type.name = 'Пиратский корабль'),
+        (select id from pilot where pilot.name = 'Борегрок'), 7),
+       ('Корабль Рейнджера Леонид', (select id from spaceship_type where spaceship_type.name = 'Корабль Рейнджера'),
+        (select id from pilot where pilot.name = 'Леонид'), 7),
+       ('Пассажирский Лайнер Ролаакан',
+        (select id from spaceship_type where spaceship_type.name = 'Пассажирский Лайнер'),
+        (select id from pilot where pilot.name = 'Ролаакан'), 13),
+       ('Грузовой транспорт Кудорга', (select id from spaceship_type where spaceship_type.name = 'Грузовой транспорт'),
+        (select id from pilot where pilot.name = 'Кудорга'), 8),
+       ('Корабль Рейнджера Гааори', (select id from spaceship_type where spaceship_type.name = 'Корабль Рейнджера'),
+        (select id from pilot where pilot.name = 'Гааори'), 15),
+       ('Корабль Рейнджера Шварц', (select id from spaceship_type where spaceship_type.name = 'Корабль Рейнджера'),
+        (select id from pilot where pilot.name = 'Шварц'), 23),
+       ('Корабль Рейнджера Траак', (select id from spaceship_type where spaceship_type.name = 'Корабль Рейнджера'),
+        (select id from pilot where pilot.name = 'Траак'), 23),
+       ('Военный корабль Толоймак', (select id from spaceship_type where spaceship_type.name = 'Пассажирский Лайнер'),
+        (select id from pilot where pilot.name = 'Толоймак'), 19),
+       ('Пиратский корабль Ацка', (select id from spaceship_type where spaceship_type.name = 'Пиратский корабль'),
+        (select id from pilot where pilot.name = 'Ацка'), 17),
+       ('Корабль Рейнджера Раа Мати', (select id from spaceship_type where spaceship_type.name = 'Корабль Рейнджера'),
+        (select id from pilot where pilot.name = 'Раа Мати'), 23),
+       ('Пиратский корабль Элка-Ган', (select id from spaceship_type where spaceship_type.name = 'Пиратский корабль'),
+        (select id from pilot where pilot.name = 'Элка-Ган'), 3),
+       ('Пиратский корабль Саб', (select id from spaceship_type where spaceship_type.name = 'Пиратский корабль'),
+        (select id from pilot where pilot.name = 'Саб'), 18),
+       ('Пиратский корабль Зоггарто', (select id from spaceship_type where spaceship_type.name = 'Пиратский корабль'),
+        (select id from pilot where pilot.name = 'Зоггарто'), 21),
+       ('Грузовой транспорт Мелорри', (select id from spaceship_type where spaceship_type.name = 'Пассажирский Лайнер'),
+        (select id from pilot where pilot.name = 'Мелорри'), 16),
+       ('Пиратский корабль Пирр', (select id from spaceship_type where spaceship_type.name = 'Пиратский корабль'),
+        (select id from pilot where pilot.name = 'Пирр'), 19);
+
+insert into spacebase(name, spacebase_type_id, system_id)
+values ('Пьяный корсар',
+        (select id from spacebase_type where spacebase_type.name = 'Черный рынок'),
+        (select id from systemsr where systemsr.name = 'Таллот')),
+       ('Костоправ',
+        (select id from spacebase_type where spacebase_type.name = 'Медицинский центр'),
+        (select id from systemsr where systemsr.name = 'Солнце')),
+       ('Террор',
+        (select id from spacebase_type where spacebase_type.name = 'Черный рынок'),
+        (select id from systemsr where systemsr.name = 'Шеат')),
+       ('Доминион',
+        (select id from spacebase_type where spacebase_type.name = 'Доминион'),
+        (select id from systemsr where systemsr.name = 'Денеб')),
+       ('Альфа',
+        (select id from spacebase_type where spacebase_type.name = 'Военная база'),
+        (select id from systemsr where systemsr.name = 'Фелгест')),
+       ('Мечтатель',
+        (select id from spacebase_type where spacebase_type.name = 'Центр рейнджеров'),
+        (select id from systemsr where systemsr.name = 'Диадема')),
+       ('Квантум',
+        (select id from spacebase_type where spacebase_type.name = 'Научная станция'),
+        (select id from systemsr where systemsr.name = 'Бетельгейзе')),
+       ('Эконом',
+        (select id from spacebase_type where spacebase_type.name = 'Бизнес-центр'),
+        (select id from systemsr where systemsr.name = 'Таллот'))
 ;
 
-
-insert into living_races
-values
-    (
-        default,
-        (select race_id from race where race.name = 'Маллоки'),
-        (select planet_info_id
-         from planet_info
-         where planet_info.planet_id = (select planet_id from planet where planet.name = 'Земля'))
-    ),
-    (
-        default,
-        (select race_id from race where race.name = 'Человек'),
-        (select planet_info_id
-         from planet_info
-         where planet_info.planet_id = (select planet_id from planet where planet.name = 'Земля'))
-    );
-
-
 insert into action_type
-(
-    name, action_impact
-)
-values
-    (
-        'Нападение на торговое судно', -4
-    ),
-    (
-        'Помощь терпящему крушение мирному кораблю', +2
-    );
+    (name, action_impact)
+values ('Нападение на торговое судно', -4),
+       ('Помощь терпящему крушение мирному кораблю', +2);
 
-insert into pilot
-(
-    name, description, race_id, native_planet_id, karma
-)
-values
-    (
-        'Свинка Пепа',
-        'Самая храбрая космическая свинка.',
-        (select id from race where race.name = 'Человек'),
-        (select id from planet where planet.name = 'Земля')
-    ),
-    (
-        'Джек Воробей',
-        'Хм хэм!... Капитан Джек Воробей!',
-        (select id from race where race.name = 'Человек'),
-        (select id from planet where planet.name = 'Земля')
-    );
 
 insert into action
-(
-    action_description, pilot_id, action_type_id
-)
-values
-    (
-        'Было совершено ограбление торгового судна. Обошлось без жертв.',
-        (select id from pilot where pilot.name = 'Свинка Пепа'),
-        (select id from action_type where action_type.name = 'Нападение на торговое судно')
-    );
-
-
-insert into spaceship
-(
-    name, spaceship_type_id, pilot_id
-)
-values
-    (
-        'Зеленая Мария', -- тут чт-то не тоо с Корсаром
-        (select id from spaceship_type where name = 'Корсар'),
-        (select id from pilot where name = 'Джек Воробей')
-    );
-
-insert into permissions_log
-(
-    date, permission_received, spaceship_id, spacebase_id
-)
-values
-    (
-        now( ), -- the date is set inside trigger, not depending on this
-        true, -- this is set inside trigger
-        (select id from spaceship where spaceship.name = ''),
-        (select id from spacebase where spacebase.name = '')
-    );
+    (action_description, pilot_id, action_type_id)
+values ('Было совершено ограбление торгового судна. Обошлось без жертв.',
+        1,
+        (select id from action_type where action_type.name = 'Нападение на торговое судно'));

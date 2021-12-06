@@ -1,7 +1,7 @@
 create table sector
 (
     id   serial primary key,
-    name varchar(64) not null
+    name varchar(64) not null unique
         check ( length(name) > 0 )
 );
 
@@ -20,17 +20,17 @@ create table systemSR
 create table spacebase_type
 (
     id          serial primary key,
-    name        varchar(16) not null unique check ( length(name) > 0 ),
+    name        varchar(32) not null unique check ( length(name) > 0 ),
     description varchar(512),
-    karma_from  int check ( karma_from >= -100 and karma_from < 100 ),
-    karma_to    int check (karma_to < 100 and karma_to > -100
-        and karma_to > karma_from)
+    rating_down    int check (rating_down < 100 and rating_down >= -100
+        ),
+    rating_up  int check ( rating_up >= -100 and rating_up <= 100 and rating_down < rating_up)
 );
 
 
 create table spacebase
 (
-    id                int primary key,
+    id                serial primary key,
     name              varchar(64) not null unique check ( length(name) > 0 ),
     spacebase_type_id int         not null references spacebase_type on delete restrict
         on update cascade,    -- no reason to delete the type
@@ -48,7 +48,7 @@ create table politics
     id          serial primary key,
     name        varchar(32)  not null
         check ( length(name) > 0 ),
-    description varchar(256) not null
+    description varchar(512) not null
         check ( length(description) > 0 )
 );
 
@@ -75,7 +75,7 @@ create table race
 create table planet
 (
 
-    id        int primary key,
+    id        serial primary key,
     name      varchar(64)                               not null unique check ( length(name) > 0 ),
     systemSR  int references systemSR on delete cascade not null,
     citizens  int                                       not null
@@ -93,7 +93,7 @@ create table planet
 create table action_type
 (
     id            serial primary key,
-    name          varchar(32) not null unique
+    name          varchar(128) not null unique
         check ( length(name) > 0 ),
     action_impact int         not null
         check
@@ -106,7 +106,7 @@ create table action_type
 create table user_role
 (
     id        serial primary key,
-    role_name varchar(32)
+    role_name varchar(32) unique
 );
 
 create table username
@@ -136,7 +136,7 @@ create table pilot
 create table spaceship_type
 (
     id          serial primary key,
-    name        varchar(16) not null unique
+    name        varchar(32) not null unique
         check ( length(name) > 0 ),
     description varchar(256)
 );
@@ -153,7 +153,8 @@ create table spaceship
     pilot_id          int references pilot not null
         references pilot
             on delete cascade -- spaceship without pilot doesn't exist
-            on update cascade
+            on update cascade,
+    system_id int references systemsr on delete cascade not null
 );
 
 
@@ -180,11 +181,11 @@ create table living_races
         references race
             on delete cascade
             on update cascade not null,
-    planet_info_id int
+    planet__id int
         references planet
             on delete cascade
             on update cascade not null,
-    unique (race_id, planet_info_id)
+    unique (race_id, planet__id)
 );
 
 create table landings

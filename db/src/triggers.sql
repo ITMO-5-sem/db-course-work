@@ -3,14 +3,12 @@
 -- Updates a pilot's karma by it's id
 create or replace function update_karma() returns trigger as
 $$
-declare
-    pilot_id_arg int;
 begin
     update pilot
-    set karma =
+    set rating =
     (
         (
-            select karma
+            select rating
             from pilot
             where id = new.pilot_id
         )
@@ -27,21 +25,7 @@ begin
                  on a.action_type_id = a_t.id
         )
     )
---         update pilot
---             set karma =
---             (
---                 select sum(action_impact)
---                 from
---                 (
---                     select pilot_id, action_impact
---                     from
---                     (
---                         action a join action_type a_t on a.action_type_id = a_t.id
---                     )
---                 ) as "act_act_t"
---                 where act_act_t.pilot_id = pilot_id_arg
---             )
-    where id = pilot_id_arg;
+    where id = NEW.id;
     return new;
 end;
 $$ language plpgsql;
@@ -55,101 +39,67 @@ execute procedure update_karma();
 
 
 
-create or replace function process_permission() returns trigger as
+-- new triggers
+
+
+create or replace function tr_fn_Living_races_insert() returns trigger as
 $$
 declare
-
-    spaceship_id_arg          int;
-    spacebase_id_arg          int;
-    landing_time              timestamp;
-    min_required_karma        int;
-    max_required_karma        int;
-    pilot_karma               int;
-    permission_received_local bool;
-
+    citizens int;
 begin
-
-    spaceship_id_arg := new.spaceship_id;
-    spacebase_id_arg := new.spacebase_id;
-
-    landing_time := now();
-    select karma_from, karma_to
-    into min_required_karma, max_required_karma
-    from spacebase_type
-    where spacebase_type.id =
-          (
-              select spacebase_type_id
-              from spacebase
-              where spacebase.id = spacebase_id_arg
-          );
-
-    select karma
-    into pilot_karma
-    from pilot
-    where pilot.id =
-          (
-              select pilot_id
-              from spaceship
-              where spaceship.id = spaceship_id_arg
-          );
-
-
-    permission_received_local := false;
-
-    if ((min_required_karma < pilot_karma) and (pilot_karma < max_required_karma)) then
-        permission_received_local := true;
+    citizens = (select citizens from planet where planet_id = NEW.planet_id);
+    if ( citizens = 0 ) then
+        raise exception 'A planet with no citizens can not have any living races.';
     end if;
 
-    insert into permissions_log
-    values (default,
-            now(),
-            permission_received_local,
-            spaceship_id_arg,
-            spacebase_id_arg);
-
-    return new;
+    return NEW;
 end;
 $$ language plpgsql;
 
 
-create trigger process_permission_trigger
+create trigger tr_Living_races_insert
     before insert
-    on permissions_log
+    on living_races
     for each row
-execute procedure process_permission();
+execute procedure tr_fn_Living_races_insert();
 
 
 
 create or replace function tr_fn_Pilot_insert() returns trigger as
 $$
 begin
-     new.karma = 0;
+    NEW.rating = 0;
 
     return new;
 end;
 $$ language plpgsql;
 
 
-create or replace function tr_fn_Pilot_update() returns trigger as
-$$
-begin
-    if ( ! new.karma is null ) then
-        raise exception 'Karma cannot be changed explicitly. It is only calculated based on pilot actions.';
-    end if;
-
-    return new;
-end;
-$$ language plpgsql;
-
-
-create trigger tr_Pilot_update
+create trigger tr_Pilot_insert
     before update
     on pilot
     for each row
 execute procedure tr_fn_Pilot_insert();
 
 
-create trigger tr_Pilot_insert
+
+create or replace function tr_fn_Pilot_update() returns trigger as
+$$
+declare
+    old_rating int;
+begin
+    old_rating = (select rating from pilot where id = NEW.id);
+
+    if ( NEW.rating is not null ) then
+        NEW.rating = old_rating;
+    end if;
+
+    return NEW;
+end;
+$$ language plpgsql;
+
+
+create trigger tr_Pilot_update
     before update
     on pilot
     for each row

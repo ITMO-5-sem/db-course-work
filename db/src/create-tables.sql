@@ -80,11 +80,11 @@ create table planet
     systemSR  int references systemSR on delete cascade not null,
     citizens  int                                       not null
         check ( citizens >= 0 ), -- citizens - кол-во жителей (в тыс.)
-    politics  int
+    politics int
         references politics
             on delete set null
             on update cascade,
-    economics integer
+    economics int
         references economics
             on delete set null
             on update cascade
@@ -181,11 +181,11 @@ create table living_races
         references race
             on delete cascade
             on update cascade not null,
-    planet__id int
+    planet_id int
         references planet
             on delete cascade
             on update cascade not null,
-    unique (race_id, planet__id)
+    unique (race_id, planet_id)
 );
 
 create table landings
